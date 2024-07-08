@@ -4,13 +4,15 @@ import { PrismaService } from '@prisma/prisma.service';
 import { Auth } from '../domain/auth.entity';
 import { AuthNotFoundException } from '../domain/auth.entity.exception';
 import { AuthRepositoryPort } from '../domain/auth.repository.port';
+import { AuthMapper as AuthPersistenceMapper } from './auth.repository.mapper';
+import type { Auth as AuthPrisma } from '@prisma/client';
 
 @Injectable()
 export class AuthPrismaRepository implements AuthRepositoryPort {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async insert(auth: Auth): Promise<Either<UnexpectedError, void>> {
-		const authPrisma: AuthPrisma = AuthMapper.toDto(auth);
+		const authPrisma: AuthPrisma = AuthPersistenceMapper.toPersistence(auth);
 
 		await this.prisma.auth.create({
 			data: authPrisma,
@@ -30,7 +32,7 @@ export class AuthPrismaRepository implements AuthRepositoryPort {
 			return Either.left(new AuthNotFoundException());
 		}
 
-		const auth = AuthMapper.persistanceToDomain(authPersistence);
+		const auth = AuthPersistenceMapper.persistanceToDomain(authPersistence);
 
 		return Either.right(auth);
 	}

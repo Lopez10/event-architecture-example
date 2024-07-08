@@ -21,4 +21,11 @@ export class AuthMapper {
 			new Id(authDto.id),
 		).get();
 	}
+	static toPersistence(auth: Auth): AuthPrimitives {
+		return {
+			id: auth.propsCopy.id.value,
+			userId: auth.props.userId.value,
+			password: auth.props.password.value,
+		};
+	}
 }
