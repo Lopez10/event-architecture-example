@@ -2,7 +2,14 @@ import { Either, Entity, Id, Password } from '@lib';
 import { AuthEntityUnknownException } from './auth.entity.exception';
 
 export type AuthProps = {
+	userId: Id;
 	password: Password;
+};
+
+export type AuthPrimitives = {
+	id: string;
+	userId: string;
+	password: string;
 };
 
 export class Auth extends Entity<AuthProps> {
