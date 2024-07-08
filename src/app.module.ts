@@ -1,3 +1,5 @@
+import { AuthModule } from '@modules/auth/auth.module';
+import { UserModule } from '@modules/user/user.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
@@ -7,6 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 			envFilePath: `.env.${process.env.NODE_ENV}`,
 			isGlobal: true,
 		}),
+		UserModule,
+		AuthModule,
 	],
 	controllers: [],
 	providers: [],
