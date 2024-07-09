@@ -1,5 +1,6 @@
-import { ValueObject, Either } from '@lib';
-import { InvalidEmailFormatException } from './exceptions/email.value-object.exception';
+import { Either } from '@lib/domain/either';
+import { ValueObject } from '../value-object.base';
+import { InvalidEmailFormatException } from './exceptions';
 
 export class Email extends ValueObject<string> {
 	private constructor(value: string) {

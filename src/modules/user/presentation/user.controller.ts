@@ -5,7 +5,7 @@ import {
 } from '../domain/user.repository.port';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RegisterDto } from './user.register.mapper';
-import { CreateUser } from '../application/use-case/create-user/create-user.use-case';
+import { CreateUserUseCase } from '../application/use-case/create-user/create-user.use-case';
 import { CreateUserDto } from '../application/use-case/create-user/create-user.mapper';
 import { EventBusPort, EventBusPortSymbol } from '@lib';
 
@@ -25,7 +25,10 @@ export class UserController {
 		description: 'User created',
 	})
 	async register(@Body() registerDto: RegisterDto): Promise<void> {
-		const createUser = new CreateUser(this.userRepository, this.eventBus);
+		const createUser = new CreateUserUseCase(
+			this.userRepository,
+			this.eventBus,
+		);
 		const createUserDto: CreateUserDto = {
 			email: registerDto.email,
 			name: registerDto.name,

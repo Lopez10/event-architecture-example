@@ -35,6 +35,12 @@
       ],
       "@prisma/*":[
         "./src/prisma/*"
+      ],
+      "@config":[
+        "./src/config"
+      ],
+      "@config/*":[
+        "./src/config/*"
       ]
     }
   }

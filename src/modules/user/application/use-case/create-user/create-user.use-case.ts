@@ -15,10 +15,10 @@ import { UserAlreadyExistsException } from './create-user.exception';
 import { CreateUserDto } from './create-user.mapper';
 import { UserCreated } from '../../events/user-created';
 import { UserCreationFailed } from '../../events/user-creation-failed';
-import { USER_CREATED } from '@modules/events';
+import { USER_CREATED } from 'src/config/events';
 
 @Injectable()
-export class CreateUser {
+export class CreateUserUseCase {
 	constructor(
 		@Inject(UserRepositoryPortSymbol)
 		private readonly userRepository: UserRepositoryPort,

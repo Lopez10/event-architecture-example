@@ -1,4 +1,3 @@
-import { Either, ValueObject } from '@lib';
 import * as bcrypt from 'bcrypt';
 import {
 	PasswordTooShortException,
@@ -7,6 +6,8 @@ import {
 	PasswordWithoutLowercaseException,
 	PasswordWithoutUppercaseException,
 } from './exceptions/password.value-object.exception';
+import { ValueObject } from '../value-object.base';
+import { Either } from '@lib';
 
 export class Password extends ValueObject<string> {
 	private static readonly SALT_ROUNDS = 10;

@@ -1,4 +1,4 @@
-import { ExceptionBase } from '@lib';
+import { ExceptionBase } from '@lib/exceptions';
 
 export const INVALID_EMAIL_FORMAT = 'Invalid email format';
 

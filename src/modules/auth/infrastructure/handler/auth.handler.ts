@@ -2,9 +2,9 @@ import {
 	AuthRepositoryPortSymbol,
 	AuthRepositoryPort,
 } from '@modules/auth/domain/auth.repository.port';
-import { USER_CREATED } from '@modules/events';
 import { Inject } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { ClientProxy, EventPattern } from '@nestjs/microservices';
+import { EXAMPLE_SERVICE, USER_CREATED } from '@config';
 
 export class AuthHandler {
 	constructor(

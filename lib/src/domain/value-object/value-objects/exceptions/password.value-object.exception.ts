@@ -1,4 +1,4 @@
-import { ExceptionBase } from '@lib';
+import { ExceptionBase } from '@lib/exceptions';
 
 export const INVALID_PASSWORD_FORMAT = 'AUTH.INVALID_PASSWORD_FORMAT';
 export const PASSWORD_TOO_SHORT = 'AUTH.PASSWORD_TOO_SHORT';
