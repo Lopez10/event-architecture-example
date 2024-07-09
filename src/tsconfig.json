@@ -7,7 +7,7 @@
     "include": [
         "modules/**/*",
         "prisma/**/*",
-        "config/**/*",
+        "config/**/*", "sagas/user.saga.ts",
     ],
     "exclude": [
         "node_modules",

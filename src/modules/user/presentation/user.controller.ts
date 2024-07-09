@@ -7,9 +7,9 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RegisterDto } from './user.register.mapper';
 import { CreateUserUseCase } from '../application/use-case/create-user/create-user.use-case';
 import { CreateUserDto } from '../application/use-case/create-user/create-user.mapper';
-import { EventBusPort, EventBusPortSymbol } from '@lib';
-import { UserCreated } from '../application/events/user-created';
+import { UserCreatedEvent } from '../application/events/user-created';
 import { USER_CREATED } from '@config';
+import { EventBus } from '@nestjs/cqrs';
 
 @ApiTags('User')
 @Controller('User')
@@ -17,8 +17,7 @@ export class UserController {
 	constructor(
 		@Inject(UserRepositoryPortSymbol)
 		private readonly userRepository: UserRepositoryPort,
-		@Inject(EventBusPortSymbol)
-		private readonly eventBus: EventBusPort,
+		private readonly eventBus: EventBus,
 	) {}
 
 	@Post('register')
@@ -41,7 +40,7 @@ export class UserController {
 
 		const user = userCreated.get();
 
-		const event = new UserCreated(USER_CREATED, {
+		const event = new UserCreatedEvent(USER_CREATED, {
 			userId: user.id.value,
 			password: registerDto.password,
 		});
