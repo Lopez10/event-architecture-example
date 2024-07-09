@@ -30,7 +30,7 @@ export class CreateUser {
 
 		const newUser = User.create({
 			email: emailVo.get(),
-			name: 'John Doe',
+			name: createUserDto.name,
 		});
 
 		await this.userRepository.insert(newUser.get());
