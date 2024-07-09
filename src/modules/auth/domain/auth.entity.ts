@@ -17,6 +17,10 @@ export class Auth extends Entity<AuthProps> {
 		return this.props.password;
 	}
 
+	get userId() {
+		return this.props.userId;
+	}
+
 	private constructor(props: AuthProps, id?: Id) {
 		super(props, id);
 	}
