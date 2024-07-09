@@ -5,8 +5,8 @@ import {
 } from '../domain/user.repository.port';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RegisterDto } from './user.register.mapper';
-import { CreateUser } from '../application/create-user/create-user.use-case';
-import { CreateUserDto } from '../application/create-user/create-user.mapper';
+import { CreateUser } from '../application/use-case/create-user/create-user.use-case';
+import { CreateUserDto } from '../application/use-case/create-user/create-user.mapper';
 
 @ApiTags('User')
 @Controller('User')

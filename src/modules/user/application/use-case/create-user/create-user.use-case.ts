@@ -1,17 +1,28 @@
-import { Either, Email, InvalidEmailFormatException } from '@lib';
+import {
+	Either,
+	Email,
+	EventBusPort,
+	EventBusPortSymbol,
+	InvalidEmailFormatException,
+} from '@lib';
 import { User } from '@modules/user/domain/user.entity';
 import {
 	UserRepositoryPort,
 	UserRepositoryPortSymbol,
 } from '@modules/user/domain/user.repository.port';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserAlreadyExistsException } from './create-user.exception';
 import { CreateUserDto } from './create-user.mapper';
+import { UserCreated } from '../../events/user-created';
+import { UserCreationFailed } from '../../events/user-creation-failed';
 
+@Injectable()
 export class CreateUser {
 	constructor(
 		@Inject(UserRepositoryPortSymbol)
 		private readonly userRepository: UserRepositoryPort,
+		@Inject(EventBusPortSymbol)
+		private readonly eventBus: EventBusPort,
 	) {}
 
 	async run(
@@ -35,7 +46,28 @@ export class CreateUser {
 			name: createUserDto.name,
 		});
 
-		await this.userRepository.insert(newUser.get());
+		const userCreated = newUser.get();
+
+		try {
+			await this.userRepository.insert(userCreated);
+
+			const event = new UserCreated(
+				userCreated.id.value,
+				userCreated.email.value,
+				userCreated.name,
+			);
+
+			this.eventBus.publish(event);
+		} catch (error) {
+			const failureEvent = new UserCreationFailed(
+				userCreated.email.value,
+				error.message,
+			);
+
+			this.eventBus.publish(failureEvent);
+
+			return Either.left(new UserAlreadyExistsException());
+		}
 
 		return Either.right(undefined);
 	}
