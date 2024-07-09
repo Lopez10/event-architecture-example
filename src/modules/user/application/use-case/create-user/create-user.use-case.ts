@@ -15,6 +15,7 @@ import { UserAlreadyExistsException } from './create-user.exception';
 import { CreateUserDto } from './create-user.mapper';
 import { UserCreated } from '../../events/user-created';
 import { UserCreationFailed } from '../../events/user-creation-failed';
+import { USER_CREATED } from '@modules/events';
 
 @Injectable()
 export class CreateUser {
@@ -51,24 +52,24 @@ export class CreateUser {
 		try {
 			await this.userRepository.insert(userCreated);
 
-			const event = new UserCreated(
-				userCreated.id.value,
-				userCreated.email.value,
-				userCreated.name,
-			);
+			const event = new UserCreated(USER_CREATED, {
+				id: userCreated.id.value,
+				email: userCreated.email.value,
+				name: userCreated.name,
+			});
 
 			this.eventBus.publish(event);
+
+			return Either.right(undefined);
 		} catch (error) {
-			const failureEvent = new UserCreationFailed(
-				userCreated.email.value,
-				error.message,
-			);
+			const failureEvent = new UserCreationFailed('user-creation-failed', {
+				email: userCreated.email.value,
+				reason: error.message,
+			});
 
 			this.eventBus.publish(failureEvent);
 
-			return Either.left(new UserAlreadyExistsException());
+			return Either.left(error);
 		}
-
-		return Either.right(undefined);
 	}
 }
