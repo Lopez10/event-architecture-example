@@ -19,7 +19,7 @@ export class CreateAuthUseCase {
 		const userId = new Id(createAuthDto.userId);
 		const authFound = await this.authRepositoryPort.findByUserId(userId);
 
-		if (authFound) {
+		if (!authFound) {
 			return Either.left(new AuthEntityUnknownException());
 		}
 

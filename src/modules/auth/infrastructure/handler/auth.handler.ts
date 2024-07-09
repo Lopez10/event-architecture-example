@@ -2,10 +2,14 @@ import {
 	AuthRepositoryPortSymbol,
 	AuthRepositoryPort,
 } from '@modules/auth/domain/auth.repository.port';
-import { Inject } from '@nestjs/common';
-import { ClientProxy, EventPattern } from '@nestjs/microservices';
-import { EXAMPLE_SERVICE, USER_CREATED } from '@config';
+import { Controller, Inject, Injectable } from '@nestjs/common';
+import { EventPattern, Payload } from '@nestjs/microservices';
+import { USER_CREATED } from '@config';
+import { CreateAuthUseCase } from '@modules/auth/application/create-auth/create-auth.use-case';
+import { CreateAuthDto } from '@modules/auth/application/create-auth/create-auth.mapper';
 
+@Injectable()
+@Controller()
 export class AuthHandler {
 	constructor(
 		@Inject(AuthRepositoryPortSymbol)
@@ -13,7 +17,9 @@ export class AuthHandler {
 	) {}
 
 	@EventPattern(USER_CREATED)
-	async handle() {
-		// Handle event
+	async handle(@Payload() data: CreateAuthDto) {
+		const createAuth = new CreateAuthUseCase(this.authRepository);
+
+		await createAuth.run(data);
 	}
 }

@@ -29,13 +29,19 @@ export class UserPrismaRepository implements UserRepositoryPort {
 		return Either.right(user);
 	}
 
-	async insert(user: User): Promise<Either<UnexpectedError, void>> {
+	async insert(user: User): Promise<Either<UnexpectedError, User>> {
 		const userPrisma: UserPrimitives = UserRepositoryMapper.toDto(user);
 
-		await this.prisma.user.create({
+		const userCreated = await this.prisma.user.create({
 			data: userPrisma,
 		});
 
-		return Either.right(undefined);
+		if (!userCreated) {
+			return Either.left(new UnexpectedError());
+		}
+
+		const userCreatedDomain = UserRepositoryMapper.toDomain(userCreated).get();
+
+		return Either.right(userCreatedDomain);
 	}
 }

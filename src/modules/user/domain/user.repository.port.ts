@@ -4,7 +4,7 @@ import { UserNotFoundException } from './user.exception';
 
 export interface UserRepositoryPort {
 	findByEmail(email: Email): Promise<Either<UserNotFoundException, User>>;
-	insert(user: User): Promise<Either<UnexpectedError, void>>;
+	insert(user: User): Promise<Either<UnexpectedError, User>>;
 }
 
 export const UserRepositoryPortSymbol = Symbol('UserRepositoryPort');

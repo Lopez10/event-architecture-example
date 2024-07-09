@@ -4,6 +4,7 @@ import {
 	EventBusPort,
 	EventBusPortSymbol,
 	InvalidEmailFormatException,
+	UnexpectedError,
 } from '@lib';
 import { User } from '@modules/user/domain/user.entity';
 import {
@@ -13,32 +14,32 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { UserAlreadyExistsException } from './create-user.exception';
 import { CreateUserDto } from './create-user.mapper';
-import { UserCreated } from '../../events/user-created';
-import { UserCreationFailed } from '../../events/user-creation-failed';
-import { USER_CREATED } from 'src/config/events';
 
 @Injectable()
 export class CreateUserUseCase {
 	constructor(
 		@Inject(UserRepositoryPortSymbol)
 		private readonly userRepository: UserRepositoryPort,
-		@Inject(EventBusPortSymbol)
-		private readonly eventBus: EventBusPort,
 	) {}
 
 	async run(
 		createUserDto: CreateUserDto,
 	): Promise<
-		Either<InvalidEmailFormatException | UserAlreadyExistsException, void>
+		Either<
+			| InvalidEmailFormatException
+			| UserAlreadyExistsException
+			| UnexpectedError,
+			User
+		>
 	> {
 		const emailVo = Email.create(createUserDto.email);
 		if (emailVo.isLeft()) {
 			return Either.left(new InvalidEmailFormatException());
 		}
 
-		const user = await this.userRepository.findByEmail(emailVo.get());
+		const userFound = await this.userRepository.findByEmail(emailVo.get());
 
-		if (user.isRight()) {
+		if (userFound.isRight()) {
 			return Either.left(new UserAlreadyExistsException());
 		}
 
@@ -47,29 +48,12 @@ export class CreateUserUseCase {
 			name: createUserDto.name,
 		});
 
-		const userCreated = newUser.get();
+		const user = await this.userRepository.insert(newUser.get());
 
-		try {
-			await this.userRepository.insert(userCreated);
-
-			const event = new UserCreated(USER_CREATED, {
-				id: userCreated.id.value,
-				email: userCreated.email.value,
-				name: userCreated.name,
-			});
-
-			this.eventBus.publish(event);
-
-			return Either.right(undefined);
-		} catch (error) {
-			const failureEvent = new UserCreationFailed('user-creation-failed', {
-				email: userCreated.email.value,
-				reason: error.message,
-			});
-
-			this.eventBus.publish(failureEvent);
-
-			return Either.left(error);
+		if (user.isLeft()) {
+			return Either.left(new UnexpectedError());
 		}
+
+		return Either.right(user.get());
 	}
 }
