@@ -36,11 +36,11 @@
       "@prisma/*":[
         "./src/prisma/*"
       ],
-      "@config":[
-        "./src/config"
+      "@sagas":[
+        "./src/sagas"
       ],
-      "@config/*":[
-        "./src/config/*"
+      "@sagas/*":[
+        "./src/sagas/*"
       ]
     }
   }

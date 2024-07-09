@@ -8,8 +8,8 @@ import { RegisterDto } from './user.register.mapper';
 import { CreateUserUseCase } from '../application/use-case/create-user/create-user.use-case';
 import { CreateUserDto } from '../application/use-case/create-user/create-user.mapper';
 import { UserCreatedEvent } from '../application/events/user-created';
-import { USER_CREATED } from '@config';
 import { EventBus } from '@nestjs/cqrs';
+import { USER_CREATED } from '@sagas/events';
 
 @ApiTags('User')
 @Controller('User')
