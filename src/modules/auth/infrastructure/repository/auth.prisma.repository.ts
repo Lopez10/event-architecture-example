@@ -1,9 +1,9 @@
 import { Either, UnexpectedError, Id } from '@lib';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@prisma/prisma.service';
-import { Auth } from '../domain/auth.entity';
-import { AuthNotFoundException } from '../domain/auth.entity.exception';
-import { AuthRepositoryPort } from '../domain/auth.repository.port';
+import { Auth } from '../../domain/auth.entity';
+import { AuthNotFoundException } from '../../domain/auth.entity.exception';
+import { AuthRepositoryPort } from '../../domain/auth.repository.port';
 import { AuthMapper as AuthPersistenceMapper } from './auth.repository.mapper';
 import type { Auth as AuthPrisma } from '@prisma/client';
 

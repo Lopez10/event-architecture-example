@@ -1,5 +1,5 @@
 import { Id, Password } from '@lib';
-import { Auth, AuthPrimitives } from '../domain/auth.entity';
+import { Auth, AuthPrimitives } from '../../domain/auth.entity';
 
 export class AuthMapper {
 	static toDomain(authDto: AuthPrimitives): Auth {
