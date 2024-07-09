@@ -5,7 +5,7 @@ import { Either, Email, Id, UnexpectedError } from '@lib';
 import type { User, UserPrimitives } from '../domain/user.entity';
 import type { User as UserPrisma } from '@prisma/client';
 import { UserNotFoundException } from '../domain/user.exception';
-import { UserMapper as UserRepositoryMapper } from './user.repository.mapper';
+import { UserMapper as UserRepositoryMapper } from '../application/user.mapper';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepositoryPort {

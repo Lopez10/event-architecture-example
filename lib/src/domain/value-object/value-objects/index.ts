@@ -4,3 +4,4 @@ export * from './id.value-object';
 export * from './password.value-object';
 export * from './name.value-object';
 export * from './description.value-object';
+export * from './exceptions';
