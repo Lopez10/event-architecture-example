@@ -19,7 +19,6 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api-doc', app, document);
 
-	await app.startAllMicroservices();
 	await app.listen(nestPort);
 }
 bootstrap();
