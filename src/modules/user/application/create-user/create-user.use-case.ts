@@ -1,0 +1,38 @@
+import { Either, Email, InvalidEmailFormatException } from '@lib';
+import { User } from '@modules/user/domain/user.entity';
+import { UserRepositoryPortSymbol } from '@modules/user/domain/user.repository.port';
+import { UserPrismaRepository } from '@modules/user/infrastructure/user.prisma.repository';
+import { Inject } from '@nestjs/common';
+import { UserAlreadyExistsException } from './create-user.exception';
+import { CreateUserDto } from './create-user.mapper';
+
+export class CreateUser {
+	constructor(
+		@Inject(UserRepositoryPortSymbol)
+		private readonly userRepository: UserPrismaRepository,
+	) {}
+
+	async run(
+		createUserDto: CreateUserDto,
+	): Promise<
+		Either<InvalidEmailFormatException | UserAlreadyExistsException, void>
+	> {
+		const emailVo = Email.create(createUserDto.email);
+		if (emailVo.isLeft()) {
+			return Either.left(new InvalidEmailFormatException());
+		}
+
+		const user = await this.userRepository.findByEmail(emailVo.get());
+
+		if (user.isRight()) {
+			return Either.left(new UserAlreadyExistsException());
+		}
+
+		const newUser = User.create({
+			email: emailVo.get(),
+			name: 'John Doe',
+		});
+
+		await this.userRepository.insert(newUser.get());
+	}
+}

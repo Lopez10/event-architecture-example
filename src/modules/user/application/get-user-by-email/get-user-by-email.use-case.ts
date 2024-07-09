@@ -7,16 +7,7 @@ import { UserNotFoundException } from '@modules/user/domain/user.exception';
 import { UserMapper } from '../user.mapper';
 
 @Injectable()
-export class GetUserByEmail
-	implements
-		UseCase<
-			string,
-			Either<
-				InvalidEmailFormatException | UserNotFoundException,
-				UserPrimitives
-			>
-		>
-{
+export class GetUserByEmail {
 	constructor(
 		@Inject(UserRepositoryPortSymbol)
 		private readonly userRepository: UserPrismaRepository,
