@@ -42,6 +42,10 @@ export abstract class Entity<T> {
 		return Object.freeze(propsCopy);
 	}
 
+	get id(): Id {
+		return this._id;
+	}
+
 	private validateProps(props: T): void {
 		const MAX_PROPS = 50;
 

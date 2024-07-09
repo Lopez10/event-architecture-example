@@ -8,10 +8,9 @@ datasource db {
 }
 
 model User {
-  id       String   @id @unique
-  email    String   @unique
-  isActive Boolean? @default(true)
-  auth     Auth?
+  id    String @id @unique
+  email String @unique
+  auth  Auth?
 }
 
 model Auth {
