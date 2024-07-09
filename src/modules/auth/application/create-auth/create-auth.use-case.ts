@@ -1,11 +1,11 @@
 import { Either, Id } from '@lib';
 import { Inject, Injectable } from '@nestjs/common';
-import { AuthEntityUnknownException } from '../domain/auth.entity.exception';
+import { AuthEntityUnknownException } from '../../domain/auth.entity.exception';
 import { CreateAuthDto } from './create-auth.mapper';
 import {
 	AuthRepositoryPort,
 	AuthRepositoryPortSymbol,
-} from '../domain/auth.repository.port';
+} from '../../domain/auth.repository.port';
 
 @Injectable()
 export class CreateAuthUseCase {
