@@ -1,7 +1,9 @@
 import { Either, Email, InvalidEmailFormatException } from '@lib';
 import { User } from '@modules/user/domain/user.entity';
-import { UserRepositoryPortSymbol } from '@modules/user/domain/user.repository.port';
-import { UserPrismaRepository } from '@modules/user/infrastructure/user.prisma.repository';
+import {
+	UserRepositoryPort,
+	UserRepositoryPortSymbol,
+} from '@modules/user/domain/user.repository.port';
 import { Inject } from '@nestjs/common';
 import { UserAlreadyExistsException } from './create-user.exception';
 import { CreateUserDto } from './create-user.mapper';
@@ -9,7 +11,7 @@ import { CreateUserDto } from './create-user.mapper';
 export class CreateUser {
 	constructor(
 		@Inject(UserRepositoryPortSymbol)
-		private readonly userRepository: UserPrismaRepository,
+		private readonly userRepository: UserRepositoryPort,
 	) {}
 
 	async run(
