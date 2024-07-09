@@ -34,5 +34,7 @@ export class CreateUser {
 		});
 
 		await this.userRepository.insert(newUser.get());
+
+		return Either.right(undefined);
 	}
 }
