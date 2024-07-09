@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 import { ofType, Saga } from '@nestjs/cqrs';
-import { CreateAuthCommand } from '@modules/auth/application/create-auth/create-auth.command';
+import { CreateAuthCommand } from '@modules/auth/application/commands/create-auth/create-auth.command';
 import { UserCreatedEvent } from '../modules/user/application/events/user-created';
 
 @Injectable()

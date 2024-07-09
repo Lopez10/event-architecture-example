@@ -1,5 +1,5 @@
 import { Event } from '@lib';
-import { CreateAuthDto } from '@modules/auth/application/create-auth/create-auth.mapper';
+import { CreateAuthDto } from '@modules/auth/application/commands/create-auth/create-auth.mapper';
 
 export class UserCreatedEvent implements Event {
 	constructor(
