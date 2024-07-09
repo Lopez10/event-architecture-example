@@ -28,6 +28,12 @@ export class UserController {
 			name: registerDto.name,
 		};
 
-		await createUser.run(createUserDto);
+		const userCreated = await createUser.run(createUserDto);
+
+		if (userCreated.isLeft()) {
+			throw userCreated.getLeft();
+		}
+
+		return;
 	}
 }
