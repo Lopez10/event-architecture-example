@@ -46,7 +46,5 @@ export class UserController {
 		});
 
 		this.eventBus.publish(event);
-
-		return;
 	}
 }

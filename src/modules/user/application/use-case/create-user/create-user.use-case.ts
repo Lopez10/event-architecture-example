@@ -14,6 +14,10 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { UserAlreadyExistsException } from './create-user.exception';
 import { CreateUserDto } from './create-user.mapper';
+import {
+	UserEntityUnknownException,
+	UserNotFoundException,
+} from '@modules/user/domain/user.exception';
 
 @Injectable()
 export class CreateUserUseCase {
@@ -28,19 +32,21 @@ export class CreateUserUseCase {
 		Either<
 			| InvalidEmailFormatException
 			| UserAlreadyExistsException
-			| UnexpectedError,
+			| UnexpectedError
+			| UserNotFoundException
+			| UserEntityUnknownException,
 			User
 		>
 	> {
 		const emailVo = Email.create(createUserDto.email);
 		if (emailVo.isLeft()) {
-			return Either.left(new InvalidEmailFormatException());
+			return Either.left(emailVo.getLeft());
 		}
 
 		const userFound = await this.userRepository.findByEmail(emailVo.get());
 
 		if (userFound.isRight()) {
-			return Either.left(new UserAlreadyExistsException());
+			return Either.left(userFound.getLeft());
 		}
 
 		const newUser = User.create({
@@ -48,10 +54,14 @@ export class CreateUserUseCase {
 			name: createUserDto.name,
 		});
 
+		if (newUser.isLeft()) {
+			return Either.left(newUser.getLeft());
+		}
+
 		const user = await this.userRepository.insert(newUser.get());
 
 		if (user.isLeft()) {
-			return Either.left(new UnexpectedError());
+			return Either.left(user.getLeft());
 		}
 
 		return Either.right(user.get());
