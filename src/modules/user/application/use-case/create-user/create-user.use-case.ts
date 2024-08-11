@@ -1,8 +1,6 @@
 import {
 	Either,
 	Email,
-	EventBusPort,
-	EventBusPortSymbol,
 	InvalidEmailFormatException,
 	UnexpectedError,
 } from '@lib';
