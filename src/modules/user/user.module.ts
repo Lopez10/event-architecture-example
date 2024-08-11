@@ -6,12 +6,14 @@ import { UserPrismaRepository } from './infrastructure/user.prisma.repository';
 import { CreateUserUseCase } from './application/use-case/create-user/create-user.use-case';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
+import { DeleteUserHandler } from './application/delete-user/delete-user.handler';
 
 @Module({
 	imports: [PrismaModule, ConfigModule, CqrsModule],
 	controllers: [UserController],
 	providers: [
 		CreateUserUseCase,
+		DeleteUserHandler,
 		{
 			provide: UserRepositoryPortSymbol,
 			useClass: UserPrismaRepository,
